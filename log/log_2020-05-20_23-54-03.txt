@@ -4,3 +4,9 @@ Conexão aceite 127.0.0.1 que consta na lista branca
 Pedido recebido de 127.0.0.1: 4
 Conexão aceite 127.0.0.1 que consta na lista branca
 Pedido recebido de 127.0.0.1: 1
+Conexão aceite 127.0.0.1 que consta na lista branca
+Pedido recebido de 127.0.0.1: A sair
+Conexão aceite 25.4.86.227 que consta na lista branca
+Pedido recebido de 25.4.86.227: 1
+Conexão aceite 25.4.86.227 que consta na lista branca
+Pedido recebido de 25.4.86.227: 5
