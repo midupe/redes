@@ -4,7 +4,7 @@
 
 <h2>Requerimentos</h2>
 
-- Visual Studio Code <a href="https://code.visualstudio.com/download">[Download]</a>
+- IntelliJ <a href="https://www.jetbrains.com/idea/download">[Download]</a>
 
 - Java <a href="https://www.java.com/pt_BR/download/">[Download]</a>
 
@@ -18,17 +18,12 @@
 
 <h2>Funcionamento</h2>
 
-1. Compilar
-```
-javac ficheiro.java
-```
-2. Correr
-```
-java ficheiro
-```
+1. Correr Server
+2. Correr Cliente (vários)
+
 
 <h2>Avisos</h2>
 
-1. Realizar (sempre que abrir o projeto) Pull para atualizar o código local
+1. Realizar (sempre que abrir o projeto) Push para atualizar o código local
 
 2. Realizar Commit e Push para enviar o código
