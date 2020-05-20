@@ -75,11 +75,11 @@ public class Server {
         while(true) {
             client = server.accept();
             if (client.getInetAddress() != null && client.getInetAddress().getHostAddress() != null) {
-                final String IP = client.getInetAddress().getHostAddress();
-                final PrintStream ps = new PrintStream(client.getOutputStream());
-                final BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                final boolean check = checkIP(IP);
-                final String checkRequeste = br.readLine();
+                String IP = client.getInetAddress().getHostAddress();
+                PrintStream ps = new PrintStream(client.getOutputStream());
+                BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                boolean check = checkIP(IP);
+                String checkRequeste = br.readLine();
                 if (checkRequeste!= null && checkRequeste.equals("conexao")) {
                     if (check){
                         ps.println("TRUE");
@@ -96,6 +96,34 @@ public class Server {
                         switch(linha){
                             case "1":
                                 ps.println("TA A DAR"); 
+                                break;
+                            case "4":
+                                try {
+                                    File myObj = new File("list/whiteList.txt");
+                                    Scanner myReader = new Scanner(myObj);
+                                    while (myReader.hasNextLine()) {
+                                        String data = myReader.nextLine();
+                                        ps.println(data);
+                                    }
+                                    myReader.close();
+                                } catch (FileNotFoundException e) {
+                                    logprint("An error occurred.");
+                                    e.printStackTrace();
+                                }
+                                break;
+                            case "5":
+                                try {
+                                    File myObj = new File("list/blackList.txt");
+                                    Scanner myReader = new Scanner(myObj);
+                                    while (myReader.hasNextLine()) {
+                                        String data = myReader.nextLine();
+                                        ps.println(data);
+                                    }
+                                    myReader.close();
+                                } catch (FileNotFoundException e) {
+                                    logprint("An error occurred.");
+                                    e.printStackTrace();
+                                }
                                 break;
                             case "A sair":
                                 ps.println("Cliente desconectado");
