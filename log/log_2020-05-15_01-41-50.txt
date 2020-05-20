@@ -1,0 +1,4 @@
+Log file created: log_2020-05-15_01-41-50.txt
+Servidor iniciado na porta 6500
+Conexão aceite 127.0.0.1 que consta na lista branca
+Pedido recebido de 127.0.0.1: null

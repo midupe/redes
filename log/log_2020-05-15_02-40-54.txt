@@ -1,0 +1,13 @@
+Log file created: log_2020-05-15_02-40-54.txt
+Servidor iniciado na porta 6500
+Conexão aceite 127.0.0.1 que consta na lista branca
+Pedido recebido de 127.0.0.1: conexao
+Conexão bloqueada 127.0.0.1 que consta na lista negra
+Conexão bloqueada 127.0.0.1 que consta na lista negra
+Conexão bloqueada 127.0.0.1 que consta na lista negra
+Conexão bloqueada 127.0.0.1 que consta na lista negra
+Conexão bloqueada 127.0.0.1 que consta na lista negra
+Conexão aceite 127.0.0.1 que consta na lista branca
+Pedido recebido de 127.0.0.1: conexao
+Conexão aceite 127.0.0.1 que consta na lista branca
+Pedido recebido de 127.0.0.1: conexao
