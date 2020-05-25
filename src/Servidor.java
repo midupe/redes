@@ -90,7 +90,7 @@ public class Servidor {
         String fromClient;
         loop: while (true){
             fromClient = br.readLine();
-            logprint("Cliente " + IP + "enviou o comando" + fromClient);
+            logprint("Cliente " + IP + " enviou o comando " + fromClient);
             if (fromClient != null){
                 switch (fromClient) {
                     case "0":
