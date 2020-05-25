@@ -71,7 +71,7 @@ public class Servidor {
         }
     }
 
-    private static void sendMenuCliente() {
+    private static void sendMenu() throws Exception{
         ps.println();
         ps.println("MENU CLIENTE");
         ps.println();
@@ -82,19 +82,17 @@ public class Servidor {
         ps.println("4 - Lista branca de utilizadores");
         ps.println("5 - Lista negra de utilizadores");
         ps.println("99 – Sair");
-        ps.println();
         ps.println("Opcao?");
     }
 
     private static void runTcpServer() throws Exception{
         String fromClient;
         loop: while (true){
-            fromClient = br.readLine();
-            logprint("Cliente " + IP + " enviou o comando " + fromClient);
-            if (fromClient != null){
+            if ((fromClient = br.readLine()) != null){
+                logprint("Cliente " + IP + " enviou o comando " + fromClient);
                 switch (fromClient) {
                     case "0":
-                        sendMenuCliente();
+                        sendMenu();
                         break;
                     case "1":
                         ps.println("Utilizadores Online:");
@@ -111,6 +109,7 @@ public class Servidor {
                     default:
                         ps.println("Opcao invalida");
                 }
+                ps.println("null");
             }
         }
     }
@@ -132,8 +131,6 @@ public class Servidor {
                 //criar ligacao udp para enviar msg para cliente
                 //ServerUdp serverUdp = new ServerUdp();
                 //serverUdp.run();
-                //enviar menu cliente
-                sendMenuCliente();
                 //comandos do cliente
                 runTcpServer();
             }

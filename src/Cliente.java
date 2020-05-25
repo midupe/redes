@@ -19,16 +19,17 @@ public class Cliente {
     }
 
     private static void runTcpClient() throws Exception{
-        String fromServer = "";
+        ps.println("0");
+        String fromServer;
         loop: while (true) {
-            while ((fromServer = br.readLine()) != null) {
+            while(!(fromServer = br.readLine()).equals("null")) {
                 System.out.println(fromServer);
-                if (fromServer.equals("A sair")){
+                if (fromServer.equals("A sair")) {
                     break loop;
                 }
             }
-            Scanner scan = new Scanner(System.in);
-            String fromClient = scan.nextLine();
+            Scanner scanner = new Scanner(System.in);
+            String fromClient = scanner.nextLine();
             ps.println(fromClient);
         }
     }
