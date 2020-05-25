@@ -18,7 +18,7 @@
 
 <h2>Funcionamento</h2>
 
-1. Correr Server
+1. Correr Servidor
 2. Correr Cliente (vários)
 
 

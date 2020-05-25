@@ -97,11 +97,39 @@ public class Servidor {
                     case "1":
                         ps.println("Utilizadores Online:");
                         break;
+                    case "2":
+                        break;
+                    case "3":
+                        break;
                     case "4":
                         ps.println("Lista branca:");
+                        try {
+                            File myObj = new File("list/whiteList.txt");
+                            Scanner myReader = new Scanner(myObj);
+                            while (myReader.hasNextLine()) {
+                                String data = myReader.nextLine();
+                                ps.println(data);
+                            }
+                            myReader.close();
+                        } catch (FileNotFoundException e) {
+                            logprint("An error occurred.");
+                            e.printStackTrace();
+                        }
                         break;
                     case "5":
                         ps.println("Lista negra:");
+                        try {
+                            File myObj = new File("list/blackList.txt");
+                            Scanner myReader = new Scanner(myObj);
+                            while (myReader.hasNextLine()) {
+                                String data = myReader.nextLine();
+                                ps.println(data);
+                            }
+                            myReader.close();
+                        } catch (FileNotFoundException e) {
+                            logprint("An error occurred.");
+                            e.printStackTrace();
+                        }
                         break;
                     case "99":
                         ps.println("A sair");
