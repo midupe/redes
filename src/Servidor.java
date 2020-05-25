@@ -6,7 +6,10 @@ import java.util.Scanner;
 
 public class Servidor {
     private static String logFile = ("log/"+"log_"+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")) + ".txt");
-    public static boolean checkOnFile (String listFile, String IP) {
+    private static BufferedReader br = null;
+    private static PrintStream ps = null;
+
+    private static boolean checkOnFile (String listFile, String IP) {
         try {
             File myObj = new File(listFile);
             Scanner myReader = new Scanner(myObj);
@@ -25,7 +28,7 @@ public class Servidor {
         return false;
     }
 
-    public static boolean checkIP (String IP){ //true se o ip nao estiver na blacklist
+    private static boolean checkIP (String IP){ //true se o ip nao estiver na blacklist
         if (checkOnFile("list/blackList.txt", IP)){
             logprint("Conexão bloqueada " + IP  + " que consta na lista negra");
             return false;
@@ -39,7 +42,7 @@ public class Servidor {
         return false;
     }
 
-    public static void createLog() {
+    private static void createLog() {
         try {
             File myObj = new File(logFile);
             if (myObj.createNewFile()) {
@@ -53,7 +56,7 @@ public class Servidor {
         }
     }
 
-    public static void logprint(String str) {
+    private static void logprint(String str) {
         System.out.println(str);
         try {
             // Open given file in append mode.
@@ -67,22 +70,70 @@ public class Servidor {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    private static void sendMenuCliente() {
+        ps.println();
+        ps.println("MENU CLIENTE");
+        ps.println();
+        ps.println("0 - Menu Inicial");
+        ps.println("1 - Listar utilizadores online");
+        ps.println("2 - Enviar mensagem a um utilizador");
+        ps.println("3 - Enviar mensagem a todos os utilizadores");
+        ps.println("4 - Lista branca de utilizadores");
+        ps.println("5 - Lista negra de utilizadores");
+        ps.println("99 – Sair");
+        ps.println();
+        ps.println("Opcao?");
+    }
+
+    private static void runTcpServer() throws Exception{
+        String fromClient;
+        loop: while (true){
+            fromClient = br.readLine();
+            if (fromClient != null){
+                switch (fromClient) {
+                    case "0":
+                        sendMenuCliente();
+                        break;
+                    case "1":
+                        ps.println("Utilizadores Online:");
+                        break;
+                    case "4":
+                        ps.println("Lista branca:");
+                        break;
+                    case "5":
+                        ps.println("Lista negra:");
+                        break;
+                    case "99":
+                        ps.println("A sair");
+                        break loop;
+                    default:
+                        ps.println("Opcao invalida");
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
         createLog();
         ServerSocket server = new ServerSocket(6500);
         logprint("Servidor iniciado no porto 6500");
         Socket socket = null;
-        //aguarda mensagens
         while(true) {
             socket = server.accept();
-            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintStream ps = new PrintStream(socket.getOutputStream());
+            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            ps = new PrintStream(socket.getOutputStream());
             String linha = br.readLine();
             if(linha.equals("Pedido de conexão")){
+                //conexao
                 String IP = socket.getInetAddress().getHostAddress();
                 ps.println(checkIP(IP));
-                ServerUdp serverUdp = new ServerUdp();
-                serverUdp.run();
+                //criar ligacao udp para enviar msg para cliente
+                //ServerUdp serverUdp = new ServerUdp();
+                //serverUdp.run();
+                //enviar menu cliente
+                sendMenuCliente();
+                //comandos do cliente
+                runTcpServer();
             }
             socket.close();
         }

@@ -1,0 +1,2 @@
+Log file created: log_2020-05-25_16-07-41.txt
+Servidor iniciado no porto 6500
