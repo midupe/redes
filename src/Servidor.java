@@ -8,6 +8,7 @@ public class Servidor {
     private static String logFile = ("log/"+"log_"+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")) + ".txt");
     private static BufferedReader br = null;
     private static PrintStream ps = null;
+    private static String IP = "";
 
     private static boolean checkOnFile (String listFile, String IP) {
         try {
@@ -89,6 +90,7 @@ public class Servidor {
         String fromClient;
         loop: while (true){
             fromClient = br.readLine();
+            logprint("Cliente " + IP + "enviou o comando" + fromClient);
             if (fromClient != null){
                 switch (fromClient) {
                     case "0":
@@ -125,7 +127,7 @@ public class Servidor {
             String linha = br.readLine();
             if(linha.equals("Pedido de conexão")){
                 //conexao
-                String IP = socket.getInetAddress().getHostAddress();
+                IP = socket.getInetAddress().getHostAddress();
                 ps.println(checkIP(IP));
                 //criar ligacao udp para enviar msg para cliente
                 //ServerUdp serverUdp = new ServerUdp();
