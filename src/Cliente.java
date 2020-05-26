@@ -8,18 +8,11 @@ public class Cliente {
     private static BufferedReader br = null;
     private static PrintStream ps = null;
     private static boolean validation = false;
-
-    private static void startUdpClient (){
-        try {
-            ClientUdp client = new ClientUdp(IP);
-            System.out.println("Mensagem recebida: " + client.sendEcho("Ola"));
-            client.sendEcho("end");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private static Thread ClientUdp = null;
+    private static ClientUdp udpClient = null;
 
     private static void runTcpClient() throws Exception{
+        System.out.println("TCP INICIADO---------");
         ps.println("0");
         String fromServer;
         loop: while (true) {
@@ -35,6 +28,43 @@ public class Cliente {
         }
     }
 
+    public static class ClientUdp implements Runnable {
+        private DatagramSocket socket;
+        private InetAddress address;
+
+        private byte[] buf;
+
+        public ClientUdp(String address) throws SocketException, UnknownHostException {
+            this.socket = new DatagramSocket();
+            this.address = InetAddress.getByName(address);
+        }
+
+        public String sendEcho(String msg) throws IOException {
+            buf = msg.getBytes();
+            DatagramPacket packet
+                    = new DatagramPacket(buf, buf.length, address, 4445);
+            socket.send(packet);
+            packet = new DatagramPacket(buf, buf.length);
+            socket.receive(packet);
+            String received = new String(
+                    packet.getData(), 0, packet.getLength());
+            return received;
+        }
+
+        public void close() {
+            socket.close();
+        }
+
+        public void run() {
+            System.out.println("UDP INICIADO---------");
+            try {
+                System.out.println("Mensagem recebida: " + udpClient.sendEcho("Ola"));
+                udpClient.sendEcho("end");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public static void main(String[] args) throws Exception {
         do {
@@ -55,11 +85,12 @@ public class Cliente {
                     System.out.println("Acesso negado");
                 } else {
                     System.out.println("Conectado");
+                    //Thread ClientUdp = new Thread(udpClient = new ClientUdp(IP));
+                    //lientUdp.start();
                     runTcpClient();
-                    //startUdpClient();
                 }
-                System.out.println("Cliente Desconectado..");
                 socket.close();
+                System.out.println("Cliente Desconectado..");
             } catch (IOException exception) {
                 validation = true;
                 System.out.println("ERRO: IP inválido");

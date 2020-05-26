@@ -2,15 +2,15 @@ import java.io.*;
 import java.net.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Servidor {
-    private static String logFile = ("log/"+"log_"+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")) + ".txt");
-    private static BufferedReader br = null;
-    private static PrintStream ps = null;
-    private static String IP = "";
+    private static final String logFile = ("log/"+"log_"+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")) + ".txt");
+    private static ServerSocket server = null;
+    public static LinkedList<ClientConnected> onlineClients = new LinkedList<ClientConnected>();
 
-    private static boolean checkOnFile (String listFile, String IP) {
+    public static boolean checkOnFile (String listFile, String IP) {
         try {
             File myObj = new File(listFile);
             Scanner myReader = new Scanner(myObj);
@@ -57,7 +57,7 @@ public class Servidor {
         }
     }
 
-    private static void logprint(String str) {
+    public static void logprint(String str) {
         System.out.println(str);
         try {
             // Open given file in append mode.
@@ -71,98 +71,141 @@ public class Servidor {
         }
     }
 
-    private static void sendMenu() throws Exception{
-        ps.println();
-        ps.println("MENU CLIENTE");
-        ps.println();
-        ps.println("0 - Menu Inicial");
-        ps.println("1 - Listar utilizadores online");
-        ps.println("2 - Enviar mensagem a um utilizador");
-        ps.println("3 - Enviar mensagem a todos os utilizadores");
-        ps.println("4 - Lista branca de utilizadores");
-        ps.println("5 - Lista negra de utilizadores");
-        ps.println("99 – Sair");
-        ps.println("Opcao?");
-    }
+    public static class ServerTcp implements Runnable{
+        private BufferedReader br;
+        private PrintStream ps;
+        private String IP;
 
-    private static void runTcpServer() throws Exception{
-        String fromClient;
-        loop: while (true){
-            if ((fromClient = br.readLine()) != null){
-                logprint("Cliente " + IP + " enviou o comando " + fromClient);
-                switch (fromClient) {
-                    case "0":
-                        sendMenu();
-                        break;
-                    case "1":
-                        ps.println("Utilizadores Online:");
-                        break;
-                    case "2":
-                        break;
-                    case "3":
-                        break;
-                    case "4":
-                        ps.println("Lista branca:");
-                        try {
-                            File myObj = new File("list/whiteList.txt");
-                            Scanner myReader = new Scanner(myObj);
-                            while (myReader.hasNextLine()) {
-                                String data = myReader.nextLine();
-                                ps.println(data);
+        public ServerTcp(BufferedReader br, PrintStream ps, String IP) {
+            this.br = br;
+            this.ps = ps;
+            this.IP = IP;
+        }
+
+        private void sendMenu() throws Exception{
+            ps.println();
+            ps.println("MENU CLIENTE");
+            ps.println();
+            ps.println("0 - Menu Inicial");
+            ps.println("1 - Listar utilizadores online");
+            ps.println("2 - Enviar mensagem a um utilizador");
+            ps.println("3 - Enviar mensagem a todos os utilizadores");
+            ps.println("4 - Lista branca de utilizadores");
+            ps.println("5 - Lista negra de utilizadores");
+            ps.println("99 – Sair");
+            ps.println("Opcao?");
+        }
+
+
+        public void start() throws Exception{
+            String fromClient;
+            loop: while (true){
+                if ((fromClient = br.readLine()) != null){
+                    logprint("Cliente " + IP + " enviou o comando " + fromClient);
+                    switch (fromClient) {
+                        case "0":
+                            sendMenu();
+                            break;
+                        case "1":
+                            ps.println("Utilizadores Online:");
+                            break;
+                        case "2":
+                            break;
+                        case "3":
+                            break;
+                        case "4":
+                            ps.println("Lista branca:");
+                            try {
+                                File myObj = new File("list/whiteList.txt");
+                                Scanner myReader = new Scanner(myObj);
+                                while (myReader.hasNextLine()) {
+                                    String data = myReader.nextLine();
+                                    ps.println(data);
+                                }
+                                myReader.close();
+                            } catch (FileNotFoundException e) {
+                                logprint("An error occurred.");
+                                e.printStackTrace();
                             }
-                            myReader.close();
-                        } catch (FileNotFoundException e) {
-                            logprint("An error occurred.");
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "5":
-                        ps.println("Lista negra:");
-                        try {
-                            File myObj = new File("list/blackList.txt");
-                            Scanner myReader = new Scanner(myObj);
-                            while (myReader.hasNextLine()) {
-                                String data = myReader.nextLine();
-                                ps.println(data);
+                            break;
+                        case "5":
+                            ps.println("Lista negra:");
+                            try {
+                                File myObj = new File("list/blackList.txt");
+                                Scanner myReader = new Scanner(myObj);
+                                while (myReader.hasNextLine()) {
+                                    String data = myReader.nextLine();
+                                    ps.println(data);
+                                }
+                                myReader.close();
+                            } catch (FileNotFoundException e) {
+                                logprint("An error occurred.");
+                                e.printStackTrace();
                             }
-                            myReader.close();
-                        } catch (FileNotFoundException e) {
-                            logprint("An error occurred.");
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "99":
-                        ps.println("A sair");
-                        break loop;
-                    default:
-                        ps.println("Opcao invalida");
+                            break;
+                        case "99":
+                            ps.println("A sair");
+                            break loop;
+                        default:
+                            ps.println("Opcao invalida");
+                    }
+                    ps.println("null");
                 }
-                ps.println("null");
+            }
+        }
+
+
+        public void run() {
+            try {
+                start();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        createLog();
-        ServerSocket server = new ServerSocket(6500);
-        logprint("Servidor iniciado no porto 6500");
-        Socket socket = null;
-        while(true) {
-            socket = server.accept();
-            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            ps = new PrintStream(socket.getOutputStream());
+    public static class ClientConnected{
+        Socket socket;
+        BufferedReader br;
+        PrintStream ps;
+        String IP;
+
+        public ClientConnected() throws IOException {
+            this.socket = server.accept();
+            this.br = new BufferedReader(new InputStreamReader(socket.getInputStream()));;
+            this.ps = new PrintStream(socket.getOutputStream());
             String linha = br.readLine();
             if(linha.equals("Pedido de conexão")){
-                //conexao
-                IP = socket.getInetAddress().getHostAddress();
-                ps.println(checkIP(IP));
-                //criar ligacao udp para enviar msg para cliente
-                //ServerUdp serverUdp = new ServerUdp();
-                //serverUdp.run();
-                //comandos do cliente
-                runTcpServer();
+                this.IP = socket.getInetAddress().getHostAddress();
+                boolean checkIP = checkIP(IP);
+                ps.println(checkIP);
+                if (checkIP) {
+                    Thread ServerTcp = new Thread(new ServerTcp(br, ps, IP));
+                    ServerTcp.start();
+                    onlineClients.add(this);
+                } else {
+                    socket.close();
+                }
             }
+        }
+
+        public void endConnection() throws IOException {
             socket.close();
+            onlineClients.remove(this);
+            logprint("Cliente " + IP + " desconectado");
+        }
+    }
+
+
+    public static void main(String[] args) throws Exception {
+        createLog();
+        server = new ServerSocket(6500);
+        logprint("Servidor iniciado no porto 6500");
+        Thread serverUdp = new Thread(new ServerUdp());
+        serverUdp.start();
+        logprint("Servidor iniciado no porto 9031");
+        while(true) {
+            ClientConnected client = new ClientConnected();
         }
     }
 }

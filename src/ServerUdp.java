@@ -4,13 +4,13 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
-public class ServerUdp extends Thread {
+public class ServerUdp implements Runnable {
     private DatagramSocket socket;
     private boolean running;
     private byte[] buf = new byte[256];
 
     public ServerUdp() throws SocketException {
-        socket = new DatagramSocket(4445);
+        socket = new DatagramSocket(9031);
     }
 
     public void run() {
