@@ -108,6 +108,11 @@ public class Servidor {
                             break;
                         case "1":
                             ps.println("Utilizadores Online:");
+                            for (int i=0; i<onlineClients.size(); i++){
+                                String IP = onlineClients.get(i).getIP();
+                                String text = (i + " - " + IP);
+                                ps.println(text);
+                            }
                             break;
                         case "2":
                             break;
@@ -169,6 +174,10 @@ public class Servidor {
         BufferedReader br;
         PrintStream ps;
         String IP;
+
+        public String getIP() {
+            return IP;
+        }
 
         public ClientConnected() throws IOException {
             this.socket = server.accept();
