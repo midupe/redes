@@ -192,6 +192,7 @@ public class Servidor {
             String linha = br.readLine();
             if(linha.equals("Pedido de conexão")){
                 this.IP = socket.getInetAddress().getHostAddress();
+                verifyIfAlreadyConnected();
                 boolean checkIP = checkIP(IP);
                 ps.println(checkIP);
                 if (checkIP) {
@@ -202,6 +203,11 @@ public class Servidor {
                     socket.close();
                 }
             }
+        }
+
+        private boolean verifyIfAlreadyConnected(){
+            onlineClients.removeIf(client -> this.IP.equals(client.getIP()));
+            return false;
         }
 
         public void endConnection() throws IOException {
