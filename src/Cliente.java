@@ -10,21 +10,49 @@ public class Cliente {
     private static boolean validation = false;
     private static Thread ClientUdp = null;
     private static ClientUdp udpClient = null;
+    private static Socket socket = null;
 
     private static void runTcpClient() throws Exception{
         System.out.println("TCP INICIADO---------");
         ps.println("0");
         String fromServer;
-        loop: while (true) {
-            while(!(fromServer = br.readLine()).equals("null")) {
-                System.out.println(fromServer);
-                if (fromServer.equals("A sair")) {
-                    break loop;
+        boolean running = true;
+        loop: while (running) {
+            try{
+                while(!(fromServer = br.readLine()).equals("null") && !fromServer.equals("true")) {
+                    System.out.println(fromServer);
+                    if (fromServer.equals("A sair")) {
+                        running = false;
+                        break loop;
+                    }
+                }
+                if (fromServer.equals("true")){
+                    System.out.println("Conexão retomada com o servidor, por favor reinsira o comando");
+                }
+                Scanner scanner = new Scanner(System.in);
+                String fromClient = scanner.nextLine();
+                ps.println(fromClient);
+            } catch (NullPointerException | IOException exception){
+                int count = 0;
+                System.out.print("A tentar conectar ao servidor.");
+                while (count!=15) {
+                    Thread.sleep(1000);
+                    count++;
+                    if (count%3==0){
+                        System.out.print(".");
+                    }
+                    if(connect()){
+                        System.out.print("\n");
+                        break;
+                    }
+                }
+                if (count==15) {
+                    System.out.print("\n");
+                    System.out.println("Ligação com o servidor perdida");
+                    break;
                 }
             }
-            Scanner scanner = new Scanner(System.in);
-            String fromClient = scanner.nextLine();
-            ps.println(fromClient);
+
         }
     }
 
@@ -66,7 +94,20 @@ public class Cliente {
         }
     }
 
+    private static boolean connect() {
+        try {
+            socket = new Socket(IP, 6500);
+            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            ps = new PrintStream(socket.getOutputStream());
+            ps.println("Pedido de conexão");
+            return true;
+        }catch (IOException e){
+            return false;
+        }
+    }
+
     public static void main(String[] args) throws Exception {
+        validation = false;
         do {
             validation = false;
             if (args.length == 0) {
@@ -77,10 +118,9 @@ public class Cliente {
                 IP = args[0];
             }
             try {
-                Socket socket = new Socket(IP, 6500);
-                br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                ps = new PrintStream(socket.getOutputStream());
-                ps.println("Pedido de conexão");
+                if(!connect()){
+                    throw new IOException();
+                }
                 if (br.readLine().equals("false")) {
                     System.out.println("Acesso negado");
                 } else {
