@@ -16,6 +16,7 @@ public class Cliente {
         System.out.println("TCP INICIADO---------");
         ps.println("0");
         String fromServer;
+        String fromClient = "";
         boolean running = true;
         loop: while (running) {
             try{
@@ -27,11 +28,15 @@ public class Cliente {
                     }
                 }
                 if (fromServer.equals("true")){
-                    System.out.println("Conexão retomada com o servidor, por favor reinsira o comando");
+                    System.out.println("Conexão retomada com o servidor");
+                    if (!fromClient.equals("")) {
+                        ps.println(fromClient);
+                    }
+                } else {
+                    Scanner scanner = new Scanner(System.in);
+                    fromClient = scanner.nextLine();
+                    ps.println(fromClient);
                 }
-                Scanner scanner = new Scanner(System.in);
-                String fromClient = scanner.nextLine();
-                ps.println(fromClient);
             } catch (NullPointerException | IOException exception){
                 int count = 0;
                 System.out.print("A tentar conectar ao servidor.");
