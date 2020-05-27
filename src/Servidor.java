@@ -150,6 +150,12 @@ public class Servidor {
                             break;
                         case "99":
                             ps.println("A sair");
+                            for (ClientConnected onlineClient : onlineClients) {
+                                String IP = onlineClient.getIP();
+                                if (IP.equals(this.IP)) {
+                                    onlineClient.endConnection();
+                                }
+                            }
                             break loop;
                         default:
                             ps.println("Opcao invalida");
