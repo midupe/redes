@@ -1,0 +1,4 @@
+Log file created: log_2020-05-28_23-17-43.txt
+Servidor iniciado no porto 6500
+Servidor iniciado no porto 9031
+Conexão aceite 127.0.0.1 que consta na lista branca
