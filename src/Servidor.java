@@ -122,7 +122,7 @@ public class Servidor {
         logprint("Servidor TCP iniciado no porto 6500");
         Thread threadUdp = new Thread(serverUdp = new ServerUdp());
         threadUdp.start();
-        logprint("Servidor UDP iniciado no porto 6500");
+        logprint("Servidor UDP iniciado no porto 9031");
         while(true) {
             ClientConnected client = new ClientConnected();
         }

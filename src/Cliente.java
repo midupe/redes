@@ -9,15 +9,15 @@ public class Cliente {
     private static PrintStream ps = null;
     private static boolean validation = false;
     private static Socket socket = null;
-    public static boolean running = false;
+    public static boolean running = true;
     public static ClientUdp clientUdp = null;
+    private static Thread threadClientUdp = null;
 
 
     private static void runTcpClient() throws Exception{
         ps.println("0");
         String fromServer;
         String fromClient = "";
-        running = true;
         String toIP = "-1";
         loop: while (running) {
             try{
@@ -120,6 +120,7 @@ public class Cliente {
                     runUdpClient();
                     runTcpClient();
                 }
+                clientUdp.socketUdp.close();
                 socket.close();
                 System.out.println("Cliente Desconectado..");
             } catch (IOException exception) {

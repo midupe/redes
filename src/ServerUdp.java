@@ -35,7 +35,8 @@ public class ServerUdp extends Thread {
                 DatagramPacket packet = new DatagramPacket(buf, buf.length);
                 socket.receive(packet);
                 InetAddress address = packet.getAddress();
-                packet = new DatagramPacket(buf, buf.length, address, 9031);
+                int port = packet.getPort();
+                packet = new DatagramPacket(buf, buf.length, address, port);
                 String received = new String(packet.getData(), 0, packet.getLength());
                 //dividir string recebida
                 String[] parts = received.split(";");
@@ -43,9 +44,12 @@ public class ServerUdp extends Thread {
                     String toIP = parts[0];
                     String msg = parts[1];
                     toIP = Servidor.onlineClients.get(Integer.parseInt(toIP)).getIP();
-                    Servidor.logprint("Mensagem de [ " + packet.getAddress().getHostAddress() + " ] para [ " + toIP + " ] : " + msg);
                     //enviar
-                    send(msg, packet.getAddress().getHostAddress(), toIP);
+                    if(send(msg, packet.getAddress().getHostAddress(), toIP)){
+                        Servidor.logprint("Mensagem enviada de [ " + packet.getAddress().getHostAddress() + " ] para [ " + toIP + " ] : " + msg);
+                    } else {
+                        Servidor.logprint("ERRO: Enviar mensagem de [ " + packet.getAddress().getHostAddress() + " ] para [ " + toIP + " ] : " + msg);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
