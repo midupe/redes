@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class ServerTcp implements Runnable{
     private BufferedReader br;
-    private PrintStream ps;
+    public PrintStream ps;
     private String IP;
 
     public ServerTcp(BufferedReader br, PrintStream ps, String IP) {
@@ -26,7 +26,44 @@ public class ServerTcp implements Runnable{
         ps.println("4 - Lista branca de utilizadores");
         ps.println("5 - Lista negra de utilizadores");
         ps.println("99 – Sair");
-        ps.println("Opcao?");
+    }
+
+    public void optionTwo() throws Exception{
+        String fromClient;
+        int userToSendIp = -1;
+        String mensagem = null;
+        ps.println("Utilizador?");
+        ps.println("null");
+        loop: while (mensagem == null) {
+            if (userToSendIp != -1) {
+                ps.println("Mensagem?");
+                ps.println("null");
+            }
+            if ((fromClient = br.readLine()) != null){
+                if (userToSendIp == -1) {
+                    try {
+                        userToSendIp = Integer.parseInt(fromClient);
+                        if (userToSendIp<0 || userToSendIp>=Servidor.onlineClients.size()){
+                            userToSendIp = -1;
+                            ps.println("ERRO: Utilizador inválido");
+                            ps.println("null");
+                        }
+                    } catch (NumberFormatException e) {
+                        ps.println("ERRO: Utilizador inválido");
+                        ps.println("null");
+                    }
+                } else {
+                    mensagem = fromClient;
+                    ps.println("OK, mensagem enviada para " + Servidor.onlineClients.get(userToSendIp).getIP());
+                    String send = ("Recebeu uma mensagem de " + IP + ": " + mensagem);
+                    Servidor.onlineClients.get(userToSendIp).ps.println();
+                    Servidor.onlineClients.get(userToSendIp).ps.println(send);
+                    Servidor.onlineClients.get(userToSendIp).ps.println();
+                    Servidor.onlineClients.get(userToSendIp).ps.println("null");
+                }
+            }
+        }
+        System.out.println("Cliente " + IP + " enviou: [" + mensagem + "] para " + Servidor.onlineClients.get(userToSendIp).getIP());
     }
 
     public void start() throws Exception{
@@ -47,6 +84,7 @@ public class ServerTcp implements Runnable{
                         }
                         break;
                     case "2":
+                        optionTwo();
                         break;
                     case "3":
                         break;
@@ -92,6 +130,8 @@ public class ServerTcp implements Runnable{
                     default:
                         ps.println("Opcao invalida");
                 }
+                ps.println();
+                ps.println("Opcao?");
                 ps.println("null");
             }
         }
