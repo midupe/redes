@@ -2,48 +2,35 @@ import java.io.IOException;
 import java.net.*;
 
 public class ClientUdp extends Thread{
-    private DatagramSocket socketudp;
+    private DatagramSocket socket;
     private InetAddress address;
 
-    private byte[] buf;
-
-    public ClientUdp() throws SocketException, UnknownHostException {
-        this.socketudp = new DatagramSocket();
-        this.address = InetAddress.getByName(Cliente.IP);
+    public ClientUdp(String address) throws SocketException, UnknownHostException {
+        socket = new DatagramSocket();
+        this.address = InetAddress.getByName(address);
     }
 
     public void sendEcho(String msg) throws IOException {
-        buf = msg.getBytes();
+        //enviar
+        byte[] buf = msg.getBytes();
         DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 9031);
-        this.socketudp.send(packet);
+        socket.send(packet);
     }
 
-    public void reciveMsg() throws IOException{
-        while (Cliente.running){
+    public void run(){
+        while (Cliente.running) {
             try {
+                byte[] buf = new byte[256];
                 DatagramPacket packet = new DatagramPacket(buf, buf.length);
-                socketudp.receive(packet);
+                socket.receive(packet);
                 String received = new String(packet.getData(), 0, packet.getLength());
-                if (!received.isEmpty() || !received.equals("")) {
-                    System.out.println();
-                    System.out.println("Mensagem recebida: " + received);
-                    System.out.println();
-                }
-            } catch (IOException | NullPointerException e) {
+                System.out.println(received);
+            } catch (IOException ignored) {
             }
         }
     }
 
     public void close() {
-        this.socketudp.close();
+        socket.close();
     }
-
-    public void run(){
-        try {
-            reciveMsg();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 }

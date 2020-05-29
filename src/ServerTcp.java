@@ -31,39 +31,23 @@ public class ServerTcp implements Runnable{
     public void optionTwo() throws Exception{
         String fromClient;
         int userToSendIp = -1;
-        String mensagem = null;
         ps.println("Utilizador?");
-        ps.println("null");
-        loop: while (mensagem == null) {
-            if (userToSendIp != -1) {
-                ps.println("Mensagem?");
-                ps.println("null");
-            }
+        while (userToSendIp == -1) {
             if ((fromClient = br.readLine()) != null){
-                if (userToSendIp == -1) {
-                    try {
-                        userToSendIp = Integer.parseInt(fromClient);
-                        if (userToSendIp<0 || userToSendIp>=Servidor.onlineClients.size()){
-                            userToSendIp = -1;
-                            ps.println("ERRO: Utilizador inválido");
-                            ps.println("null");
-                        }
-                    } catch (NumberFormatException e) {
+                try {
+                    userToSendIp = Integer.parseInt(fromClient);
+                    if (userToSendIp<0 || userToSendIp>=Servidor.onlineClients.size()){
+                        userToSendIp = -1;
                         ps.println("ERRO: Utilizador inválido");
-                        ps.println("null");
                     }
-                } else {
-                    mensagem = fromClient;
-                    ps.println("OK, mensagem enviada para " + Servidor.onlineClients.get(userToSendIp).getIP());
-                    String send = ("Recebeu uma mensagem de " + IP + ": " + mensagem);
-                    Servidor.onlineClients.get(userToSendIp).ps.println();
-                    Servidor.onlineClients.get(userToSendIp).ps.println(send);
-                    Servidor.onlineClients.get(userToSendIp).ps.println();
-                    Servidor.onlineClients.get(userToSendIp).ps.println("null");
+                } catch (NumberFormatException e) {
+                    ps.println("ERRO: Utilizador inválido");
                 }
             }
         }
-        System.out.println("Cliente " + IP + " enviou: [" + mensagem + "] para " + Servidor.onlineClients.get(userToSendIp).getIP());
+        ps.println("Mensagem?");
+        String toIP = Servidor.onlineClients.get(userToSendIp).getIP();
+        ps.println("OK, mensagem enviada para " + toIP);
     }
 
     public void start() throws Exception{

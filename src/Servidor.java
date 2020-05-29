@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class Servidor {
     private static final String logFile = ("log/"+"log_"+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")) + ".txt");
     private static ServerSocket server = null;
+    public static ServerUdp serverUdp = null;
     public static LinkedList<ClientConnected> onlineClients = new LinkedList<ClientConnected>();
 
     public static boolean checkOnFile (String listFile, String IP) {
@@ -118,11 +119,10 @@ public class Servidor {
     public static void main(String[] args) throws Exception {
         createLog();
         server = new ServerSocket(6500);
-        logprint("Servidor iniciado no porto 6500");
-        ServerUdp udp = null;
-        Thread serverUdp = new Thread(udp = new ServerUdp());
-        serverUdp.start();
-        //udp.sendEcho("TESTE CRL", "127.0.0.1");
+        logprint("Servidor TCP iniciado no porto 6500");
+        Thread threadUdp = new Thread(serverUdp = new ServerUdp());
+        threadUdp.start();
+        logprint("Servidor UDP iniciado no porto 6500");
         while(true) {
             ClientConnected client = new ClientConnected();
         }

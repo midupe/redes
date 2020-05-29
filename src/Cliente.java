@@ -8,9 +8,9 @@ public class Cliente {
     private static BufferedReader br = null;
     private static PrintStream ps = null;
     private static boolean validation = false;
-    private static ClientUdp client = null;
     private static Socket socket = null;
     public static boolean running = false;
+    public static ClientUdp clientUdp = null;
 
 
     private static void runTcpClient() throws Exception{
@@ -18,24 +18,44 @@ public class Cliente {
         String fromServer;
         String fromClient = "";
         running = true;
+        String toIP = "-1";
         loop: while (running) {
             try{
-                while(!(fromServer = br.readLine()).equals("null") && !fromServer.equals("true")) {
+                while(!(fromServer = br.readLine()).equals("null") && !fromServer.equals("true") && !fromServer.equals("Mensagem?") && !fromServer.equals("Utilizador?") && !fromServer.equals("ERRO: Utilizador inválido")) {
                     System.out.println(fromServer);
                     if (fromServer.equals("A sair")) {
                         running = false;
                         break loop;
                     }
                 }
-                if (fromServer.equals("true")){
-                    System.out.println("Conexão retomada com o servidor");
-                    if (!fromClient.equals("")) {
-                        ps.println(fromClient);
+                switch (fromServer) {
+                    case "true":
+                        System.out.println("Conexão retomada com o servidor");
+                        if (!fromClient.equals("")) {
+                            ps.println(fromClient);
+                        }
+                        break;
+                    case "Utilizador?":
+                    case "ERRO: Utilizador inválido": {
+                        System.out.println(fromServer);
+                        Scanner scanner = new Scanner(System.in);
+                        toIP = scanner.nextLine();
+                        ps.println(toIP);
+                        break;
                     }
-                } else {
-                    Scanner scanner = new Scanner(System.in);
-                    fromClient = scanner.nextLine();
-                    ps.println(fromClient);
+                    case "Mensagem?": {
+                        System.out.println(fromServer);
+                        Scanner scanner = new Scanner(System.in);
+                        fromClient = scanner.nextLine();
+                        clientUdp.sendEcho(toIP + ";" + fromClient);
+                        break;
+                    }
+                    default: {
+                        Scanner scanner = new Scanner(System.in);
+                        fromClient = scanner.nextLine();
+                        ps.println(fromClient);
+                        break;
+                    }
                 }
             } catch (NullPointerException | IOException exception){
                 int count = 0;
@@ -73,6 +93,11 @@ public class Cliente {
         }
     }
 
+    private static void runUdpClient() throws SocketException, UnknownHostException {
+        Thread threadClientUdp = new Thread(clientUdp = new ClientUdp(IP));
+        threadClientUdp.start();
+    }
+
     public static void main(String[] args) throws Exception {
         validation = false;
         do {
@@ -92,8 +117,7 @@ public class Cliente {
                     System.out.println("Acesso negado");
                 } else {
                     System.out.println("Conectado");
-                    Thread ClientUdp = new Thread(new ClientUdp());;
-                    ClientUdp.start();
+                    runUdpClient();
                     runTcpClient();
                 }
                 socket.close();

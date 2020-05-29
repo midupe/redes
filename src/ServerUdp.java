@@ -7,43 +7,46 @@ import java.net.SocketException;
 public class ServerUdp extends Thread {
     private DatagramSocket socket;
     private boolean running;
-    private byte[] buf = new byte[256];
-    private InetAddress address;
 
     public ServerUdp() throws SocketException {
         socket = new DatagramSocket(9031);
     }
 
-    public void sendEcho(String msg, String IP) throws IOException {
+    public boolean send(String msg, String fromIP ,String toIP){
         try {
-            InetAddress adress = InetAddress.getByName(IP);
-            buf = msg.getBytes();
+            String text = "Mensagem recebida [ " + fromIP + " ] : " + msg;
+            InetAddress address = InetAddress.getByName(toIP);
+            byte[] buf = text.getBytes();
             DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 9031);
             socket.send(packet);
-        }catch (NullPointerException | IOException e){
+            return true;
+        } catch (IOException e) {
+            return false;
         }
     }
 
     public void run() {
-        Servidor.logprint("Servidor iniciado no porto 9031");
         running = true;
 
         while (running) {
             try {
+                //receber
+                byte[] buf = new byte[256];
                 DatagramPacket packet = new DatagramPacket(buf, buf.length);
                 socket.receive(packet);
-
                 InetAddress address = packet.getAddress();
-                int port = packet.getPort();
-                packet = new DatagramPacket(buf, buf.length, address, port);
+                packet = new DatagramPacket(buf, buf.length, address, 9031);
                 String received = new String(packet.getData(), 0, packet.getLength());
-
-                System.out.println("Mensagem recebida [ " + packet.getAddress().getHostAddress() + " ] : " + received);
-                if (received.equals("end")) {
-                    running = false;
-                    continue;
+                //dividir string recebida
+                String[] parts = received.split(";");
+                if (parts.length == 2) {
+                    String toIP = parts[0];
+                    String msg = parts[1];
+                    toIP = Servidor.onlineClients.get(Integer.parseInt(toIP)).getIP();
+                    Servidor.logprint("Mensagem de [ " + packet.getAddress().getHostAddress() + " ] para [ " + toIP + " ] : " + msg);
+                    //enviar
+                    send(msg, packet.getAddress().getHostAddress(), toIP);
                 }
-                socket.send(packet);
             } catch (IOException e) {
                 e.printStackTrace();
             }

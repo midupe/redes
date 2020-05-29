@@ -1,0 +1,10 @@
+Log file created: log_2020-05-29_17-46-13.txt
+Servidor TCP iniciado no porto 6500
+Servidor UDP iniciado no porto 6500
+Conexão aceite 127.0.0.1 que consta na lista branca
+Cliente 127.0.0.1 enviou o comando 2
+Conexão aceite 127.0.0.1 que consta na lista branca
+Cliente 127.0.0.1 enviou o comando 0
+Cliente 127.0.0.1 enviou o comando 0
+Cliente 127.0.0.1 enviou o comando 1
+Cliente 127.0.0.1 enviou o comando 2
