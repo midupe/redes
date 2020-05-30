@@ -21,7 +21,7 @@ public class Cliente {
         String toIP = "-1";
         loop: while (running) {
             try{
-                while(!(fromServer = br.readLine()).equals("null") && !fromServer.equals("true") && !fromServer.equals("Mensagem?") && !fromServer.equals("Utilizador?") && !fromServer.equals("ERRO: Utilizador inválido")) {
+                while(!(fromServer = br.readLine()).equals("null") && !fromServer.equals("true") && !fromServer.equals("Mensagem ?") && !fromServer.equals("Mensagem?") && !fromServer.equals("Utilizador?") && !fromServer.equals("ERRO: Utilizador inválido")) {
                     System.out.println(fromServer);
                     if (fromServer.equals("A sair")) {
                         running = false;
@@ -48,6 +48,13 @@ public class Cliente {
                         Scanner scanner = new Scanner(System.in);
                         fromClient = scanner.nextLine();
                         clientUdp.sendEcho(toIP + ";" + fromClient);
+                        break;
+                    }
+                    case "Mensagem ?": {
+                        System.out.println(fromServer);
+                        Scanner scanner = new Scanner(System.in);
+                        fromClient = scanner.nextLine();
+                        clientUdp.sendEcho("All" + ";" + fromClient);
                         break;
                     }
                     default: {

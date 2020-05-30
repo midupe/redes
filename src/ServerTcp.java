@@ -49,6 +49,10 @@ public class ServerTcp implements Runnable{
         String toIP = Servidor.onlineClients.get(userToSendIp).getIP();
         ps.println("OK, mensagem enviada para " + toIP);
     }
+    public void optionThree() {
+        ps.println("Mensagem ?");
+        ps.println("OK, mensagem enviada a todos os utilizadores");
+    }
 
     public void start() throws Exception{
         String fromClient;
@@ -71,6 +75,7 @@ public class ServerTcp implements Runnable{
                         optionTwo();
                         break;
                     case "3":
+                        optionThree();
                         break;
                     case "4":
                         ps.println("Lista branca:");

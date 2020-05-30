@@ -29,7 +29,11 @@ public class ServerUdp extends Thread {
     }
 
     public void sendoToAll(String msg, String fromIP){
-
+        for(String key: users.keySet()) {
+            if(!key.equals(fromIP)){
+                send(msg, fromIP, key);
+            }
+        }
     }
 
     public void run() {
@@ -55,12 +59,17 @@ public class ServerUdp extends Thread {
                     if (parts.length == 2) {
                         String toIP = parts[0];
                         String msg = parts[1];
-                        toIP = Servidor.onlineClients.get(Integer.parseInt(toIP)).getIP();
-                        //enviar
-                        if (send(msg, packet.getAddress().getHostAddress(), toIP)) {
-                            Servidor.logprint("Mensagem enviada de [ " + packet.getAddress().getHostAddress() + " ] para [ " + toIP + " ] : " + msg);
+                        if(toIP.equals("All")){
+                            sendoToAll(msg, packet.getAddress().getHostAddress());
+                            Servidor.logprint("Mensagem enviada de [ " + packet.getAddress().getHostAddress() + " ] para todos : " + msg);
                         } else {
-                            Servidor.logprint("ERRO: Enviar mensagem de [ " + packet.getAddress().getHostAddress() + " ] para [ " + toIP + " ] : " + msg);
+                            toIP = Servidor.onlineClients.get(Integer.parseInt(toIP)).getIP();
+                            //enviar
+                            if (send(msg, packet.getAddress().getHostAddress(), toIP)) {
+                                Servidor.logprint("Mensagem enviada de [ " + packet.getAddress().getHostAddress() + " ] para [ " + toIP + " ] : " + msg);
+                            } else {
+                                Servidor.logprint("ERRO: Enviar mensagem de [ " + packet.getAddress().getHostAddress() + " ] para [ " + toIP + " ] : " + msg);
+                            }
                         }
                     }
                 }
