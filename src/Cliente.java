@@ -93,7 +93,7 @@ public class Cliente {
         }
     }
 
-    private static void runUdpClient() throws SocketException, UnknownHostException {
+    private static void runUdpClient() throws IOException {
         Thread threadClientUdp = new Thread(clientUdp = new ClientUdp(IP));
         threadClientUdp.start();
     }
@@ -116,7 +116,6 @@ public class Cliente {
                 if (br.readLine().equals("false")) {
                     System.out.println("Acesso negado");
                 } else {
-                    System.out.println("Conectado");
                     runUdpClient();
                     runTcpClient();
                     clientUdp.socketUdp.close();
