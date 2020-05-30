@@ -119,8 +119,8 @@ public class Cliente {
                     System.out.println("Conectado");
                     runUdpClient();
                     runTcpClient();
+                    clientUdp.socketUdp.close();
                 }
-                clientUdp.socketUdp.close();
                 socket.close();
                 System.out.println("Cliente Desconectado..");
             } catch (IOException exception) {
