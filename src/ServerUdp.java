@@ -28,6 +28,10 @@ public class ServerUdp extends Thread {
         }
     }
 
+    public void sendoToAll(String msg, String fromIP){
+
+    }
+
     public void run() {
         running = true;
 
