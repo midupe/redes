@@ -1,3 +1,0 @@
-Log file created: log_2020-05-29_00-36-25.txt
-Servidor iniciado no porto 6500
-Servidor iniciado no porto 9031

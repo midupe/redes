@@ -1,5 +1,0 @@
-Log file created: log_2020-05-30_03-05-35.txt
-Servidor TCP iniciado no porto 6500
-Servidor UDP iniciado no porto 9031
-Conexão aceite 192.168.1.84 que consta na lista branca
-Cliente 192.168.1.84 enviou o comando 0
