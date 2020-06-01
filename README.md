@@ -5,7 +5,7 @@
 
 <h2>Relatório</h2>
 
-<a href="https://github.com/midupe/redes/blob/master/realtorio.pdf"> [Abrir]</a>
+<a href="https://github.com/midupe/redes/blob/master/relatorio.pdf"> [Abrir]</a>
 
 
 <h2>Requerimentos</h2>
