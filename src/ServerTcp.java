@@ -54,74 +54,77 @@ public class ServerTcp implements Runnable{
         ps.println("OK, mensagem enviada a todos os utilizadores");
     }
 
-    public void start() throws Exception{
+    public void start(){
         String fromClient;
         loop: while (true){
-            if ((fromClient = br.readLine()) != null){
-                Servidor.logprint("Cliente " + IP + " enviou o comando " + fromClient);
-                switch (fromClient) {
-                    case "0":
-                        sendMenu();
-                        break;
-                    case "1":
-                        ps.println("Utilizadores Online:");
-                        for (int i=0; i<Servidor.onlineClients.size(); i++){
-                            String IP = Servidor.onlineClients.get(i).getIP();
-                            String text = (i + " - " + IP);
-                            ps.println(text);
-                        }
-                        break;
-                    case "2":
-                        optionTwo();
-                        break;
-                    case "3":
-                        optionThree();
-                        break;
-                    case "4":
-                        ps.println("Lista branca:");
-                        try {
-                            File myObj = new File("list/whiteList.txt");
-                            Scanner myReader = new Scanner(myObj);
-                            while (myReader.hasNextLine()) {
-                                String data = myReader.nextLine();
-                                ps.println(data);
+            try {
+                if ((fromClient = br.readLine()) != null){
+                    Servidor.logprint("Cliente " + IP + " enviou o comando " + fromClient);
+                    switch (fromClient) {
+                        case "0":
+                            sendMenu();
+                            break;
+                        case "1":
+                            ps.println("Utilizadores Online:");
+                            for (int i=0; i<Servidor.onlineClients.size(); i++){
+                                String IP = Servidor.onlineClients.get(i).getIP();
+                                String text = (i + " - " + IP);
+                                ps.println(text);
                             }
-                            myReader.close();
-                        } catch (FileNotFoundException e) {
-                            Servidor.logprint("An error occurred.");
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "5":
-                        ps.println("Lista negra:");
-                        try {
-                            File myObj = new File("list/blackList.txt");
-                            Scanner myReader = new Scanner(myObj);
-                            while (myReader.hasNextLine()) {
-                                String data = myReader.nextLine();
-                                ps.println(data);
+                            break;
+                        case "2":
+                            optionTwo();
+                            break;
+                        case "3":
+                            optionThree();
+                            break;
+                        case "4":
+                            ps.println("Lista branca:");
+                            try {
+                                File myObj = new File("list/whiteList.txt");
+                                Scanner myReader = new Scanner(myObj);
+                                while (myReader.hasNextLine()) {
+                                    String data = myReader.nextLine();
+                                    ps.println(data);
+                                }
+                                myReader.close();
+                            } catch (FileNotFoundException e) {
+                                Servidor.logprint("An error occurred.");
+                                e.printStackTrace();
                             }
-                            myReader.close();
-                        } catch (FileNotFoundException e) {
-                            Servidor.logprint("An error occurred.");
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "99":
-                        ps.println("A sair");
-                        for (Servidor.ClientConnected onlineClient : Servidor.onlineClients) {
-                            String IP = onlineClient.getIP();
-                            if (IP.equals(this.IP)) {
-                                onlineClient.endConnection();
+                            break;
+                        case "5":
+                            ps.println("Lista negra:");
+                            try {
+                                File myObj = new File("list/blackList.txt");
+                                Scanner myReader = new Scanner(myObj);
+                                while (myReader.hasNextLine()) {
+                                    String data = myReader.nextLine();
+                                    ps.println(data);
+                                }
+                                myReader.close();
+                            } catch (FileNotFoundException e) {
+                                Servidor.logprint("An error occurred.");
+                                e.printStackTrace();
                             }
-                        }
-                        break loop;
-                    default:
-                        ps.println("Opcao invalida");
+                            break;
+                        case "99":
+                            ps.println("A sair");
+                            for (Servidor.ClientConnected onlineClient : Servidor.onlineClients) {
+                                String IP = onlineClient.getIP();
+                                if (IP.equals(this.IP)) {
+                                    onlineClient.endConnection();
+                                }
+                            }
+                            break loop;
+                        default:
+                            ps.println("Opcao invalida");
+                    }
+                    ps.println();
+                    ps.println("Opcao?");
+                    ps.println("null");
                 }
-                ps.println();
-                ps.println("Opcao?");
-                ps.println("null");
+            } catch (Exception ignored) {
             }
         }
     }

@@ -11,6 +11,15 @@ public class Servidor {
     public static ServerUdp serverUdp = null;
     public static LinkedList<ClientConnected> onlineClients = new LinkedList<ClientConnected>();
 
+    public static void addToWhitelist(String IP){
+        try {
+            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("list/whiteList.txt", true)));
+            out.println(IP);
+            out.close();
+        } catch (IOException ignored) {
+        }
+    }
+
     public static boolean checkOnFile (String listFile, String IP) {
         try {
             File myObj = new File(listFile);
@@ -37,11 +46,11 @@ public class Servidor {
         }
         if(checkOnFile("list/whiteList.txt", IP)){
             logprint("Conexão aceite " + IP  + " que consta na lista branca");
-            return true;
         } else {
-            logprint("Tentativa de conexão de " + IP  + " que não consta em nenhuma lista");
+            addToWhitelist(IP);
+            logprint("Conexão de novo utilizador " + IP);
         }
-        return false;
+        return true;
     }
 
     private static void createLog() {
