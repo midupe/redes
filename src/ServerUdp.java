@@ -23,7 +23,7 @@ public class ServerUdp extends Thread {
             DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
             socket.send(packet);
             return true;
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             return false;
         }
     }

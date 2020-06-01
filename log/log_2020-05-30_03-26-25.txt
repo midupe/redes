@@ -1,0 +1,60 @@
+Log file created: log_2020-05-30_03-26-25.txt
+Servidor TCP iniciado no porto 6500
+Servidor UDP iniciado no porto 9031
+Conexão aceite 127.0.0.1 que consta na lista branca
+Cliente 127.0.0.1 enviou o comando 0
+Cliente 127.0.0.1 enviou o comando 1
+Conexão aceite 192.168.1.84 que consta na lista branca
+Cliente 192.168.1.84 enviou o comando 0
+Cliente 192.168.1.84 enviou o comando 1
+Cliente 127.0.0.1 enviou o comando 1
+Conexão aceite 25.4.86.227 que consta na lista branca
+Cliente 25.4.86.227 enviou o comando 0
+Cliente 25.4.86.227 enviou o comando 1
+Cliente 25.4.86.227 enviou o comando 2
+Mensagem enviada de [ 25.4.86.227 ] para [ 127.0.0.1 ] : ola filho
+Cliente 127.0.0.1 enviou o comando 1
+Cliente 127.0.0.1 enviou o comando 2
+Mensagem enviada de [ 127.0.0.1 ] para [ 25.4.86.227 ] : Hello mf
+Cliente 127.0.0.1 enviou o comando 3
+Mensagem enviada de [ 127.0.0.1 ] para todos : Teste msg global. recebes?
+Cliente 25.4.86.227 enviou o comando 2
+Mensagem enviada de [ 25.4.86.227 ] para [ 127.0.0.1 ] : Sim, estou a receber
+Cliente 192.168.1.84 enviou o comando 1
+Cliente 127.0.0.1 enviou o comando 3
+Mensagem enviada de [ 127.0.0.1 ] para todos : teste
+Cliente 192.168.1.84 enviou o comando 3
+Mensagem enviada de [ 192.168.1.84 ] para todos : teste
+Cliente 127.0.0.1 enviou o comando 2
+Mensagem enviada de [ 127.0.0.1 ] para [ 25.4.86.227 ] : Afonso manda uma msg global para testar
+Cliente 127.0.0.1 enviou o comando 2
+Mensagem enviada de [ 127.0.0.1 ] para [ 25.4.86.227 ] : Acho que os 2pcs n tao a receber, so um...
+Cliente 25.4.86.227 enviou o comando 3
+Mensagem enviada de [ 25.4.86.227 ] para todos : Mensagem global, esta a uncionar
+Cliente 127.0.0.1 enviou o comando 2
+Mensagem enviada de [ 127.0.0.1 ] para [ 25.4.86.227 ] : Esta que mandaste agora foi globa?
+Cliente 127.0.0.1 enviou o comando 2
+Mensagem enviada de [ 127.0.0.1 ] para [ 25.4.86.227 ] : É que no outro pc nao funciona...
+Cliente 25.4.86.227 enviou o comando 3
+Mensagem enviada de [ 25.4.86.227 ] para todos : Esta é global
+Cliente 192.168.1.84 enviou o comando 1
+Cliente 192.168.1.84 enviou o comando 2
+Mensagem enviada de [ 192.168.1.84 ] para [ 25.4.86.227 ] : n ta a funcionar bem
+Cliente 127.0.0.1 enviou o comando 
+Cliente 127.0.0.1 enviou o comando 3
+Mensagem enviada de [ 127.0.0.1 ] para todos : teste
+Cliente 127.0.0.1 enviou o comando 1
+Cliente 127.0.0.1 enviou o comando 2
+Mensagem enviada de [ 127.0.0.1 ] para [ 192.168.1.84 ] : ola
+Conexão aceite 192.168.1.84 que consta na lista branca
+Cliente 192.168.1.84 enviou o comando 0
+Cliente 127.0.0.1 enviou o comando 3
+Mensagem enviada de [ 127.0.0.1 ] para todos : kjhugyfxts
+Cliente 127.0.0.1 enviou o comando 1
+Cliente 127.0.0.1 enviou o comando 2
+Mensagem enviada de [ 127.0.0.1 ] para [ 25.4.86.227 ] : recebeste esta quantidade de cenas ao calhas?
+Cliente 127.0.0.1 enviou o comando 2
+Mensagem enviada de [ 127.0.0.1 ] para [ 25.4.86.227 ] : Afonso?
+Cliente 127.0.0.1 enviou o comando 3
+Mensagem enviada de [ 127.0.0.1 ] para todos : AFONSO
+Cliente 192.168.1.84 enviou o comando 0
